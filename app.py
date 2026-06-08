@@ -1,29 +1,66 @@
 import streamlit as st
 import google.generativeai as genai
 from PIL import Image
+import PyPDF2
 
-# ... (setup code remains same)
+# --- Page Configuration ---
+st.set_page_config(page_title="OmniQuiz AI", page_icon="🎓", layout="wide")
 
-# UI for File Upload
-uploaded_file = st.file_uploader("Upload an image or PDF:", type=["png", "jpg", "jpeg", "pdf"])
+# --- Custom Premium Styling ---
+st.markdown("""
+    <style>
+    .main { background-color: #f8f9fa; }
+    .stButton>button { width: 100%; border-radius: 5px; height: 3em; font-weight: bold; }
+    </style>
+    """, unsafe_allow_html=True)
 
-if st.button("Analyze Content", type="primary"):
-    if uploaded_file:
-        with st.spinner("Processing your file..."):
-            try:
-                genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-                model = genai.GenerativeModel('models/gemini-3.5-flash')
-                
-                # Handle Image
+st.title("🎓 OmniQuiz AI")
+st.subheader("Drag and drop any file (Text, PDF, Image, Video) to generate a quiz.")
+
+# --- API Setup ---
+api_key = st.secrets.get("GEMINI_API_KEY")
+if not api_key:
+    st.error("API Key not found in Secrets. Please add it to your Streamlit dashboard.")
+    st.stop()
+
+# --- Inputs ---
+col1, col2 = st.columns([1, 1])
+
+with col1:
+    uploaded_file = st.file_uploader("Drop your file here", type=["txt", "pdf", "jpg", "png", "mp4"])
+
+with col2:
+    manual_text = st.text_area("Or paste content directly:", height=150)
+
+# --- Processing Logic ---
+if st.button("Generate Premium Quiz", type="primary"):
+    with st.spinner("OmniQuiz is analyzing your content..."):
+        try:
+            genai.configure(api_key=api_key)
+            model = genai.GenerativeModel('models/gemini-3.5-flash')
+            
+            content_payload = [manual_text] if manual_text else []
+            
+            # Logic for file processing
+            if uploaded_file:
                 if uploaded_file.type.startswith("image"):
-                    image_data = Image.open(uploaded_file)
-                    response = model.generate_content(["Describe this image and create a quiz based on it.", image_data])
-                
-                # Handle PDF
+                    content_payload.append(Image.open(uploaded_file))
+                elif uploaded_file.type == "application/pdf":
+                    reader = PyPDF2.PdfReader(uploaded_file)
+                    text = "".join([page.extract_text() for page in reader.pages])
+                    content_payload.append(text)
+                elif uploaded_file.type == "text/plain":
+                    content_payload.append(uploaded_file.read().decode("utf-8"))
+                # Note: Videos are handled by passing the file to the model API
                 else:
-                    # You can add PDF parsing logic here
-                    st.write("PDF processing logic goes here.")
-                
-                st.write(response.text)
-            except Exception as e:
-                st.error(f"Error: {e}")
+                    content_payload.append(uploaded_file.read())
+
+            # Final Generation
+            response = model.generate_content(content_payload + ["Create a 5-question multiple choice quiz with an answer key."])
+            
+            st.markdown("---")
+            st.markdown("### 📝 Your Quiz:")
+            st.write(response.text)
+            
+        except Exception as e:
+            st.error(f"Generation Error: {e}")
