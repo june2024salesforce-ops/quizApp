@@ -18,7 +18,7 @@ if st.button("Generate Quiz", type="primary"):
         with st.spinner("Generating your quiz..."):
             try:
                 genai.configure(api_key=api_key)
-                model = genai.GenerativeModel('gemini-1.5-flash')
+                model = genai.GenerativeModel('gemini-1.5-flash-latest')
                 prompt = f"Create a 5-question multiple choice quiz from this text: {doc_text}. Output it clearly."
                 response = model.generate_content(prompt)
                 st.markdown("---")
