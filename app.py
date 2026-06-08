@@ -6,28 +6,28 @@ import PyPDF2
 # --- Page Config ---
 st.set_page_config(page_title="OmniQuiz | Bespoke", layout="wide")
 
-# --- Luxury Styling ---
+# --- UI Styling ---
 st.markdown("""
     <style>
     .stApp { background: #FFFFFF !important; }
-    .main-container { padding: 40px; max-width: 800px; margin: auto; color: #111111 !important; }
-    h1 { color: #111111 !important; text-transform: uppercase; letter-spacing: 5px; text-align: center; }
-    .stButton>button { background: #000 !important; color: #fff !important; border-radius: 0px !important; width: 100%; }
-    .quiz-output { color: #111111 !important; font-size: 18px !important; line-height: 1.6; }
+    .main-container { padding: 40px; max-width: 800px; margin: auto; }
+    h1 { color: #000 !important; text-transform: uppercase; letter-spacing: 5px; text-align: center; }
+    .stButton>button { background: #000 !important; color: #fff !important; width: 100%; border-radius: 0px !important; }
     </style>
     """, unsafe_allow_html=True)
 
+# --- Layout ---
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
 st.title("OMNI QUIZ")
 
-# Video Section (Ab yahan sahi file name use ho raha hai)
+# Video Section (File root folder mein honi chahiye)
 if st.checkbox("Show Background Video"):
     try:
         st.video("319751_tiny.mp4")
-    except:
-        st.error("Video file '319751_tiny.mp4' repository mein nahi mili. Check karo ki upload sahi se hua hai ya nahi.")
+    except Exception as e:
+        st.error("Video file nahi mili. Check karo file root folder mein hai ya nahi.")
 
-# File Uploader
+# Content Input
 uploaded_file = st.file_uploader("Upload Document or Image", type=["txt", "pdf", "jpg", "png"])
 manual_text = st.text_area("Or input text directly", height=150)
 
@@ -40,19 +40,16 @@ if st.button("Generate Assessment"):
                 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
                 model = genai.GenerativeModel('models/gemini-3.5-flash')
                 
-                # Content processing logic
-                content = manual_text
+                content_text = manual_text
                 if uploaded_file and uploaded_file.type == "application/pdf":
                     reader = PyPDF2.PdfReader(uploaded_file)
-                    content += "\n" + "".join([p.extract_text() for p in reader.pages])
+                    content_text += "\n" + "".join([p.extract_text() for p in reader.pages])
                 
-                # Prompting for clean output
-                prompt = f"Create a 5-question multiple choice quiz. Provide options clearly. Keep a newline between each question and option.\n\nContent: {content}"
+                prompt = f"Create a 5-question multiple choice quiz. Provide options clearly. Keep each option on a new line.\n\nContent: {content_text}"
                 response = model.generate_content(prompt)
                 
                 st.markdown("---")
-                # Visibility ke liye div use kiya hai
-                st.markdown(f'<div class="quiz-output">{response.text.replace(chr(10), "<br>")}</div>', unsafe_allow_html=True)
+                st.write(response.text)
             except Exception as e:
                 st.error(f"Error: {e}")
 
