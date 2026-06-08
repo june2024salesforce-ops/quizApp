@@ -2,46 +2,47 @@ import streamlit as st
 
 st.set_page_config(page_title="Omni Quiz", layout="wide")
 
+# CSS: Background transparency aur video setup
 st.markdown("""
     <style>
-    /* 1. App background transparent */
-    [data-testid="stAppViewContainer"] { background: transparent !important; }
-    
-    /* 2. Video Background (Fixed) */
+    /* Streamlit ke layers ko hatana taaki video dikhe */
+    [data-testid="stAppViewContainer"], [data-testid="stApp"] {
+        background: transparent !important;
+    }
     .video-background {
-        position: fixed; top: 0; left: 0;
+        position: fixed;
+        top: 0; left: 0;
         width: 100vw; height: 100vh;
-        z-index: -1000; overflow: hidden;
+        z-index: -1000;
+        overflow: hidden;
     }
-    
-    /* 3. YE CONTROLS KO GAYAB KARNE WALA ASLI CODE HAI */
-    video {
+    .video-background iframe {
         width: 100vw; height: 100vh;
-        object-fit: cover;
-        pointer-events: none; /* Mouse click bhi nahi hoga video pe */
+        pointer-events: none;
     }
-    
-    /* 4. UI Floating Box */
     .main-box {
         background: rgba(0, 0, 0, 0.6) !important;
-        padding: 40px; border-radius: 20px;
-        max-width: 600px; margin: 150px auto;
-        color: white !important; text-align: center;
+        padding: 40px;
+        border-radius: 20px;
+        max-width: 600px;
+        margin: 150px auto;
+        color: white !important;
+        text-align: center;
         border: 1px solid rgba(255,255,255,0.2);
     }
+    h1, h2, h3, p { color: white !important; }
     </style>
     """, unsafe_allow_html=True)
 
-# Video (Note: Yahan 'controls' attribute nahi likha hai)
+# Video Injection
 st.markdown("""
     <div class="video-background">
-        <video autoplay loop muted playsinline>
-            <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
-        </video>
+        <iframe src="https://www.youtube.com/embed/8KY6ZE44scQ?autoplay=1&mute=1&loop=1&playlist=8KY6ZE44scQ&controls=0&showinfo=0&modestbranding=1&playsinline=1" 
+        frameborder="0" allow="autoplay; encrypted-media"></iframe>
     </div>
     """, unsafe_allow_html=True)
 
-# UI Elements
+# UI Box
 st.markdown('<div class="main-box">', unsafe_allow_html=True)
 st.title("OMNI QUIZ")
 st.subheader("ENGINEERED FOR PRECISION")
