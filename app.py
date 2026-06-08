@@ -2,22 +2,9 @@ import streamlit as st
 
 st.set_page_config(page_title="Omni Quiz", layout="wide")
 
-# CSS: Background, UI Box, aur "Ghost Box" hatane ke liye
 st.markdown("""
     <style>
-    /* 1. Reset all Streamlit containers */
-    [data-testid="stAppViewContainer"], [data-testid="stApp"], [data-testid="stMainBlockContainer"] {
-        background: transparent !important;
-    }
-    
-    /* 2. Ye line us Green/Orange Box ko hide karegi */
-    [data-testid="stMarkdownContainer"] {
-        display: block !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    /* 3. Video Background */
+    /* 1. Video Overlay (Controls) ko hide karna */
     .video-background {
         position: fixed; top: 0; left: 0;
         width: 100vw; height: 100vh;
@@ -25,18 +12,28 @@ st.markdown("""
     }
     .video-background iframe {
         width: 100vw; height: 100vh;
-        pointer-events: none;
+        pointer-events: none; /* Mouse disable */
+    }
+
+    /* 2. Streamlit ke default 'Upload' box aur baki containers ko hide karna */
+    [data-testid="stFileUploader"] {
+        background: rgba(0,0,0,0.3) !important;
+        border: none !important;
     }
     
-    /* 4. Floating UI Box */
+    /* WO BLACK BOX HATANE KE LIYE */
+    section[data-testid="stSidebar"] { display: none; }
+    [data-testid="stVerticalBlock"] > div:has(iframe) { display: none !important; }
+    
+    /* 3. Main UI Box */
     .main-box {
-        background: rgba(0, 0, 0, 0.6) !important;
+        background: rgba(0, 0, 0, 0.5) !important;
         padding: 40px; border-radius: 20px;
         max-width: 600px; margin: 150px auto;
         color: white !important; text-align: center;
-        border: 1px solid rgba(255,255,255,0.2);
+        border: 1px solid rgba(255,255,255,0.1);
+        backdrop-filter: blur(5px);
     }
-    h1, h2, h3, p { color: white !important; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -48,11 +45,12 @@ st.markdown("""
     </div>
     """, unsafe_allow_html=True)
 
-# UI Elements
+# UI Box
 st.markdown('<div class="main-box">', unsafe_allow_html=True)
 st.title("OMNI QUIZ")
 st.subheader("ENGINEERED FOR PRECISION")
 
+# File Uploader
 uploaded_file = st.file_uploader("Upload content")
 if st.button("GENERATE QUIZ"):
     st.write("Processing...")
