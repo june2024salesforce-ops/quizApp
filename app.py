@@ -2,28 +2,49 @@ import streamlit as st
 
 st.set_page_config(page_title="Omni Quiz", layout="wide")
 
-# Container setup for video
-# Hum yahan 'autoplay' ke liye nahi, balki 'st.video' ka use karenge
+# CSS: Video ko background mein 'lock' karne ke liye
 st.markdown("""
     <style>
-    .main-box {
-        background: rgba(255, 255, 255, 0.9);
-        padding: 40px; border-radius: 20px;
-        max-width: 600px; margin: 100px auto;
-        color: #000; text-align: center;
-        z-index: 10; position: relative;
+    /* 1. Video Background Setup */
+    .video-background {
+        position: fixed;
+        right: 0; bottom: 0;
+        min-width: 100%; min-height: 100%;
+        width: auto; height: auto;
+        z-index: -100; /* Isse video sabse peeche rahegi */
+        object-fit: cover;
     }
+    
+    /* 2. UI Floating Box */
+    .main-box {
+        background: rgba(0, 0, 0, 0.6); /* Transparent Dark Box */
+        padding: 40px;
+        border-radius: 20px;
+        max-width: 600px;
+        margin: 100px auto;
+        color: white;
+        text-align: center;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    /* Text Color Fix */
+    h1, h2, h3, p, label { color: white !important; }
     </style>
     """, unsafe_allow_html=True)
 
-# Video Background (Directly using Streamlit's stable component)
-# YouTube link ko st.video() ke andar daal do, autoplay=True ke saath
-st.video("https://www.youtube.com/watch?v=8KY6ZE44scQ", autoplay=True, loop=True, muted=True, start_time=0)
+# Video Background (HTML5 tag)
+# Yahan apni video ka URL daalo
+st.markdown("""
+    <video autoplay loop muted playsinline class="video-background">
+      <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
+    </video>
+    """, unsafe_allow_html=True)
 
-# UI Elements
+# UI Elements (Box ke andar)
 st.markdown('<div class="main-box">', unsafe_allow_html=True)
 st.title("OMNI QUIZ")
 st.subheader("ENGINEERED FOR PRECISION")
+
 uploaded_file = st.file_uploader("Upload content")
 if st.button("GENERATE QUIZ"):
     st.write("Processing...")
