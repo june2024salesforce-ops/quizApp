@@ -7,10 +7,40 @@ import PyPDF2
 st.set_page_config(page_title="OmniQuiz AI", page_icon="🎓", layout="wide")
 
 # --- Custom Premium Styling ---
+# --- Custom Premium Light Styling ---
 st.markdown("""
     <style>
-    .main { background-color: #f8f9fa; }
-    .stButton>button { width: 100%; border-radius: 5px; height: 3em; font-weight: bold; }
+    /* Change overall page background */
+    .stApp {
+        background-color: #FFFFFF;
+    }
+    /* Style the main text area */
+    .stTextArea textarea {
+        background-color: #F8F9FA;
+        border: 1px solid #E0E0E0;
+        border-radius: 8px;
+        color: #333333;
+    }
+    /* Make headers professional and dark */
+    h1, h2, h3 {
+        color: #1A1A1A;
+    }
+    /* Style the buttons */
+    .stButton>button {
+        background-color: #2563EB;
+        color: white;
+        border-radius: 8px;
+        border: none;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+    .stButton>button:hover {
+        background-color: #1D4ED8;
+    }
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {
+        background-color: #F3F4F6;
+    }
     </style>
     """, unsafe_allow_html=True)
 
