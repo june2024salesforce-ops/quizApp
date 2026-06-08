@@ -1,38 +1,40 @@
 import streamlit as st
-import google.generativeai as genai
 
 st.set_page_config(page_title="Omni Quiz", layout="wide")
 
-# --- UI + Background CSS ---
-st.markdown("""
+# YouTube Background Video Logic
+video_id = "8KY6ZE44scQ" 
+
+st.markdown(f"""
     <style>
-    /* Force background white/dark and clean layout */
-    .stApp {
-        background-color: #000000;
-        background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-    }
-    
-    .main-box {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(20px);
-        padding: 50px;
-        border-radius: 20px;
-        max-width: 700px;
-        margin: 100px auto;
-        color: #FFFFFF;
-        text-align: center;
-        border: 1px solid rgba(255,255,255,0.2);
-    }
-    
-    h1 { color: #FFFFFF !important; font-weight: 800; }
-    .stButton>button { background: #FFFFFF !important; color: #000 !important; width: 100%; border-radius: 5px; }
+    /* Fullscreen background video */
+    .video-background {{
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: -1;
+        overflow: hidden;
+    }}
+    .video-background iframe {{
+        width: 100vw; height: 100vh;
+        pointer-events: none; /* User video ko click na kar sake */
+    }}
+    /* Luxury Floating UI */
+    .main-box {{
+        background: rgba(255, 255, 255, 0.9);
+        padding: 50px; border-radius: 20px;
+        max-width: 700px; margin: 100px auto;
+        color: #000; text-align: center;
+    }}
     </style>
+
+    <div class="video-background">
+        <iframe src="https://www.youtube.com/embed/{video_id}?autoplay=1&mute=1&loop=1&playlist={video_id}&controls=0&showinfo=0&modestbranding=1&playsinline=1" 
+        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
     """, unsafe_allow_html=True)
 
-# --- Layout ---
+# UI Elements (Floating)
 st.markdown('<div class="main-box">', unsafe_allow_html=True)
 st.title("OMNI QUIZ")
 st.subheader("ENGINEERED FOR PRECISION")
