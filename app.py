@@ -1,19 +1,40 @@
 import streamlit as st
 import google.generativeai as genai
 
-st.title("Debug Tool")
+# Page setup
+st.set_page_config(page_title="QuizMaster AI", layout="centered")
+st.title("🎓 AI Quiz Generator")
 
-# Put your key in the box on the website
-api_key = st.text_input("Paste your API Key here", type="password")
+# Securely retrieve API Key from Streamlit Secrets
+# (Make sure to save GEMINI_API_KEY in the Cloud 'Secrets' settings)
+try:
+    api_key = st.secrets["GEMINI_API_KEY"]
+except Exception:
+    st.error("API Key not found in Secrets. Please add GEMINI_API_KEY to your Streamlit Cloud settings.")
+    st.stop()
 
-if st.button("Find My Models"):
-    if api_key:
-        genai.configure(api_key=api_key)
-        # This will list the exact names allowed for your specific key
-        st.write("Looking for your models...")
-        try:
-            model_list = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
-            st.write("Use one of these names exactly as written:")
-            st.write(model_list)
-        except Exception as e:
-            st.error(f"Error: {e}")
+# User Interface
+doc_text = st.text_area("Paste your document text here (min 50 characters):", height=200)
+
+if st.button("Generate Quiz", type="primary"):
+    if doc_text and len(doc_text) > 50:
+        with st.spinner("Generating your quiz..."):
+            try:
+                genai.configure(api_key=api_key)
+                
+                # Using the authorized Gemini 3.5 Flash model
+                model = genai.GenerativeModel('gemini-3.5-flash')
+                
+                prompt = (f"Create a 5-question multiple choice quiz from this text. "
+                          f"Include the answer key at the end. Text: {doc_text}")
+                
+                response = model.generate_content(prompt)
+                
+                st.markdown("---")
+                st.markdown("### 📝 Your Quiz:")
+                st.write(response.text)
+                
+            except Exception as e:
+                st.error(f"Generation Error: {e}")
+    else:
+        st.warning("Please paste at least 50 characters of text to generate a high-quality quiz.")
