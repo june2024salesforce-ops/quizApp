@@ -4,9 +4,7 @@ import google.generativeai as genai
 st.set_page_config(page_title="QuizMaster AI", layout="centered")
 st.title("🎓 AI Quiz Generator")
 
-# Securely retrieve the key from Streamlit Secrets
-# If the app is run locally, it looks in .streamlit/secrets.toml
-# If deployed on Streamlit Cloud, it looks in the Cloud Dashboard Secrets
+# Retrieve the key from Streamlit Secrets
 try:
     api_key = st.secrets["GEMINI_API_KEY"]
 except Exception:
@@ -20,7 +18,7 @@ if st.button("Generate Quiz", type="primary"):
         with st.spinner("Generating your quiz..."):
             try:
                 genai.configure(api_key=api_key)
-               model = genai.GenerativeModel('gemini-1.5')
+                model = genai.GenerativeModel('gemini-1.5-flash')
                 prompt = f"Create a 5-question multiple choice quiz from this text: {doc_text}. Output it clearly."
                 response = model.generate_content(prompt)
                 st.markdown("---")
