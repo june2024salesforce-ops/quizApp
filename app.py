@@ -10,33 +10,29 @@ st.set_page_config(page_title="OmniQuiz AI", page_icon="🎓", layout="wide")
 # --- Custom Premium Light Styling ---
 st.markdown("""
     <style>
-    /* Force main text to black */
-    .stApp, .stApp * {
-        color: #000000 !important;
-    }
-    /* Change overall page background */
+    /* 1. Force the background to be white */
     .stApp {
         background-color: #FFFFFF !important;
     }
-    /* Style the main text area */
-    .stTextArea textarea {
-        background-color: #F8F9FA !important;
-        border: 1px solid #E0E0E0 !important;
-        border-radius: 8px;
-        color: #000000 !important;
-    }
-    /* Make headers professional */
-    h1, h2, h3 {
+    
+    /* 2. Force all text to be dark grey/black */
+    h1, h2, h3, h4, p, div, label {
         color: #1A1A1A !important;
     }
-    /* Style the buttons */
-    .stButton>button {
-        background-color: #2563EB !important;
-        color: #FFFFFF !important;
-        border-radius: 8px;
-        border: none;
-        font-weight: 600;
+    
+    /* 3. Style the text area inputs */
+    textarea {
+        background-color: #F8F9FA !important;
+        color: #000000 !important;
+        border: 1px solid #CCCCCC !important;
     }
+    
+    /* 4. Make the file uploader labels visible */
+    [data-testid="stFileUploader"] {
+        color: #000000 !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
     </style>
     """, unsafe_allow_html=True)
 st.title("🎓 OmniQuiz AI")
