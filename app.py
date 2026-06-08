@@ -2,15 +2,13 @@ import streamlit as st
 
 st.set_page_config(page_title="Omni Quiz", layout="wide")
 
-# CSS: Video ko background mein fix karne ke liye aur UI styling
+# CSS: Background transparency aur video setup
 st.markdown("""
     <style>
-    /* 1. Background Layer Fix */
-    [data-testid="stAppViewContainer"] {
+    /* Streamlit ke layers ko hatana taaki video dikhe */
+    [data-testid="stAppViewContainer"], [data-testid="stApp"] {
         background: transparent !important;
     }
-    
-    /* 2. Video Background Container */
     .video-background {
         position: fixed;
         top: 0; left: 0;
@@ -22,8 +20,6 @@ st.markdown("""
         width: 100vw; height: 100vh;
         pointer-events: none;
     }
-    
-    /* 3. Floating Box Styling */
     .main-box {
         background: rgba(0, 0, 0, 0.6) !important;
         padding: 40px;
@@ -38,7 +34,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# YouTube Video Embed (Background)
+# Video Injection
 st.markdown("""
     <div class="video-background">
         <iframe src="https://www.youtube.com/embed/8KY6ZE44scQ?autoplay=1&mute=1&loop=1&playlist=8KY6ZE44scQ&controls=0&showinfo=0&modestbranding=1&playsinline=1" 
@@ -46,7 +42,7 @@ st.markdown("""
     </div>
     """, unsafe_allow_html=True)
 
-# UI Elements
+# UI Box
 st.markdown('<div class="main-box">', unsafe_allow_html=True)
 st.title("OMNI QUIZ")
 st.subheader("ENGINEERED FOR PRECISION")
