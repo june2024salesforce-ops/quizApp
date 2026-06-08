@@ -2,50 +2,41 @@ import streamlit as st
 
 st.set_page_config(page_title="Omni Quiz", layout="wide")
 
-# FINAL CSS FIX: Layering conflict solve karne ke liye
+# CSS: Video ko background mein lock karne ke liye
 st.markdown("""
     <style>
-    /* 1. Background layer transparent karo */
-    [data-testid="stAppViewContainer"] {
-        background: transparent !important;
-    }
-    [data-testid="stApp"] {
-        background: transparent !important;
-    }
-    
-    /* 2. Video ko fixed background banao */
     .video-background {
         position: fixed;
         top: 0; left: 0;
         width: 100vw; height: 100vh;
-        z-index: -10;
-        object-fit: cover;
+        z-index: -1000;
+        overflow: hidden;
     }
-    
-    /* 3. Floating Content Box */
+    .video-background iframe {
+        width: 100vw; height: 100vh;
+        pointer-events: none;
+    }
     .main-box {
-        background: rgba(0, 0, 0, 0.6) !important;
-        padding: 50px;
-        border-radius: 20px;
-        max-width: 600px;
-        margin: 150px auto;
-        color: white !important;
-        text-align: center;
+        background: rgba(0, 0, 0, 0.6); 
+        padding: 40px; border-radius: 20px;
+        max-width: 600px; margin: 150px auto;
+        color: white; text-align: center;
         border: 1px solid rgba(255,255,255,0.2);
     }
     h1, h2, h3, p { color: white !important; }
     </style>
     """, unsafe_allow_html=True)
 
-# 4. Video Injection (Directly in main container)
+# Yahan tumhari YouTube video ka ID hai: 8KY6ZE44scQ
 st.markdown("""
-    <video autoplay loop muted playsinline class="video-background">
-      <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
-    </video>
+    <div class="video-background">
+        <iframe src="https://www.youtube.com/embed/8KY6ZE44scQ?autoplay=1&mute=1&loop=1&playlist=8KY6ZE44scQ&controls=0&showinfo=0&modestbranding=1&playsinline=1" 
+        frameborder="0" allow="autoplay; encrypted-media"></iframe>
+    </div>
     """, unsafe_allow_html=True)
 
-# 5. UI Layout
-st.markdown('<div class="main-box">', unsafe_allow_html=True)
+# UI Box
+st.markdown('<div class="main-box">', unsafe_allowed_html=True)
 st.title("OMNI QUIZ")
 st.subheader("ENGINEERED FOR PRECISION")
 
