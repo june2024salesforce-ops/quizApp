@@ -4,7 +4,7 @@ import google.generativeai as genai
 st.title("AI Quiz Generator")
 
 # Get API Key from user
-api_key = st.text_input("Enter your Gemini API Key", type="password")
+api_key = GEMINI_API_KEY = "YOUR_ACTUAL_API_KEY_HERE"
 doc_text = st.text_area("Paste your document text here")
 
 if st.button("Generate Quiz"):
