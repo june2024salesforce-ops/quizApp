@@ -10,40 +10,35 @@ st.set_page_config(page_title="OmniQuiz AI", page_icon="🎓", layout="wide")
 # --- Custom Premium Light Styling ---
 st.markdown("""
     <style>
+    /* Force main text to black */
+    .stApp, .stApp * {
+        color: #000000 !important;
+    }
     /* Change overall page background */
     .stApp {
-        background-color: #FFFFFF;
+        background-color: #FFFFFF !important;
     }
     /* Style the main text area */
     .stTextArea textarea {
-        background-color: #F8F9FA;
-        border: 1px solid #E0E0E0;
+        background-color: #F8F9FA !important;
+        border: 1px solid #E0E0E0 !important;
         border-radius: 8px;
-        color: #333333;
+        color: #000000 !important;
     }
-    /* Make headers professional and dark */
+    /* Make headers professional */
     h1, h2, h3 {
-        color: #1A1A1A;
+        color: #1A1A1A !important;
     }
     /* Style the buttons */
     .stButton>button {
-        background-color: #2563EB;
-        color: white;
+        background-color: #2563EB !important;
+        color: #FFFFFF !important;
         border-radius: 8px;
         border: none;
         font-weight: 600;
-        transition: 0.3s;
-    }
-    .stButton>button:hover {
-        background-color: #1D4ED8;
-    }
-    /* Sidebar styling */
-    [data-testid="stSidebar"] {
-        background-color: #F3F4F6;
     }
     </style>
     """, unsafe_allow_html=True)
-
 st.title("🎓 OmniQuiz AI")
 st.subheader("Drag and drop any file (Text, PDF, Image, Video) to generate a quiz.")
 
