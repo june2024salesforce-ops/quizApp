@@ -2,25 +2,26 @@ import streamlit as st
 
 st.set_page_config(page_title="Omni Quiz", layout="wide")
 
-# CSS: Background video, UI box, aur Video Controls ko hide karne ke liye
 st.markdown("""
     <style>
     /* 1. App background transparent */
     [data-testid="stAppViewContainer"] { background: transparent !important; }
     
-    /* 2. Video Background */
+    /* 2. Video Background (Fixed) */
     .video-background {
         position: fixed; top: 0; left: 0;
         width: 100vw; height: 100vh;
         z-index: -1000; overflow: hidden;
     }
     
-    /* 3. YE HAI WO CODE JO CONTROLS HATAYEGA */
-    video::-webkit-media-controls {
-        display: none !important;
+    /* 3. YE CONTROLS KO GAYAB KARNE WALA ASLI CODE HAI */
+    video {
+        width: 100vw; height: 100vh;
+        object-fit: cover;
+        pointer-events: none; /* Mouse click bhi nahi hoga video pe */
     }
     
-    /* 4. UI Box */
+    /* 4. UI Floating Box */
     .main-box {
         background: rgba(0, 0, 0, 0.6) !important;
         padding: 40px; border-radius: 20px;
@@ -31,7 +32,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Video Player (Controls ke bina)
+# Video (Note: Yahan 'controls' attribute nahi likha hai)
 st.markdown("""
     <div class="video-background">
         <video autoplay loop muted playsinline>
